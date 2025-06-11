@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Menus Available</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/nomenuAvailable.css' %}">
+</head>
+
+<body>
+    <header>
+        <nav class="navigation">
+            <div class="container1">
+                <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+                <h1>TableTap</h1>
+            </div>
+            <div class="container2">
+                <div>
+                    <h3>{{username}}</h3>
+                </div>
+                <span>Create New Menu</span>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>You haven’t created any menus yet.</h1>
+        {% if messages %}
+        <ul id="django-messages" style="display:none;">
+            {% for message in messages %}
+            <li data-level="{{ message.level_tag }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <h1>Click on <strong>"Create New Menu"</strong>to create menu</h1>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <form method="post" action="{% url 'menu' %}" enctype="multipart/form-data">
+                        <h1>Add Menu</h1>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <small id="url_error_msg" style="color: red; display: none;">Invalid format! Use
+                            /lettersOrDigitsOnly/</small>
+                        <input type="submit" value="Create Menu"></input>
+                        <button style="margin-top: 7px;">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+
+        document.querySelector(".main2 > form > button").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "none";
+        })
+
+        document.querySelector(".container2 > span").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "block";
+        })
+
+
+        const urlInput = document.getElementById("menu_url_input");
+        const errorMsg = document.getElementById("url_error_msg");
+
+        urlInput.addEventListener("input", () => {
+            const value = urlInput.value;
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+
+            if (!regex.test(value)) {
+                errorMsg.style.display = "block";
+            } else {
+                errorMsg.style.display = "none";
+            }
+        });
+
+
+        function validateCreateUrl() {
+            const value = urlInput.value;
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            if (!regex.test(value)) {
+                errorMsg.style.display = "block";
+                urlInput.focus();
+                return false; // Prevent form submission
+            }
+            return true;
+        }
+
+        function validateEditUrl() {
+            const value = editUrlInput.value;
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            if (!regex.test(value)) {
+                editErrorMsg.style.display = "block";
+                editUrlInput.focus();
+                return false; // Prevent form submission
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messagesList = document.getElementById('django-messages');
+            if (messagesList) {
+                const allMessages = messagesList.querySelectorAll('li');
+                let found = false;
+                
+                allMessages.forEach(msg => {
+                    if (msg.innerText.startsWith("Menu:")) {
+                        found = true;
+                        // Create popup with proper class instead of inline styles
+                        const popup = document.createElement('div');
+                        popup.className = 'message-popup success';
+                        popup.innerText = msg.innerText.substring(5).trim();
+                        document.body.appendChild(popup);
+                        
+                        // Add fade-out class before removing for smooth exit animation
+                        setTimeout(() => {
+                            popup.classList.add('fade-out');
+                            // Remove after animation completes
+                            setTimeout(() => {
+                                popup.remove();
+                            }, 300); // Animation duration
+                        }, 3000);
+                    }
+                });
+                
+                // Hide the original messages container
+                messagesList.style.display = 'none';
+            }
+        });
+
+    </script>
+</body>
+
+</html>

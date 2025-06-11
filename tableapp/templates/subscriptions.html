@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscribe to TableTap</title>
+  <style>
+    :root {
+      --primary-blue: rgb(9, 56, 243);
+      --primary-blue-dark: rgb(7, 44, 191);
+      --primary-blue-light: rgba(9, 56, 243, 0.05);
+      --accent-red: #E53E3E;
+      --neutral-900: #1A202C;
+      --neutral-700: #4A5568;
+      --neutral-100: #F7FAFC;
+      --shadow-glow: 0 0 20px rgba(9, 56, 243, 0.3);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+      --radius-md: 10px;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--primary-blue-light), var(--primary-blue) 30%, var(--primary-blue-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .subscription-container {
+      background: white;
+      padding: 2.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .subscription-container h1 {
+      margin-bottom: 0.3rem;
+      color: var(--primary-blue);
+      font-size: 2rem;
+    }
+
+    .subscription-container p {
+      color: var(--neutral-700);
+      margin-bottom: 2rem;
+    }
+
+    .features-list {
+      text-align: left;
+      margin-bottom: 2rem;
+      padding-left: 0;
+    }
+
+    .features-list li {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      color: var(--neutral-900);
+    }
+
+    .features-list li::before {
+      content: "🍽️";
+      margin-right: 10px;
+    }
+
+    .btn-subscribe,
+    .btn-cancel-sub,
+    .btn-confirm,
+    .btn-cancel {
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-subscribe {
+      background-color: var(--primary-blue);
+      color: white;
+      box-shadow: var(--shadow-glow);
+      animation: pulse 2.5s infinite;
+    }
+
+    .btn-subscribe:hover {
+      background-color: var(--primary-blue-dark);
+    }
+
+    .btn-cancel-sub {
+      background-color: var(--accent-red);
+      color: white;
+      margin-top: 1rem;
+    }
+
+    .btn-cancel-sub:hover {
+      background-color: #c53030;
+    }
+
+    .btn-back {
+      display: inline-block;
+      margin-top: 1.2rem;
+      color: var(--neutral-700);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .btn-back:hover {
+      color: var(--primary-blue);
+      text-decoration: underline;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
+    }
+
+    .modal-content p {
+      margin-bottom: 1.5rem;
+      color: var(--neutral-700);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0px rgba(9, 56, 243, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(9, 56, 243, 0.6); }
+      100% { box-shadow: 0 0 0px rgba(9, 56, 243, 0.4); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="subscription-container">
+  {% if subscribe is none %}
+    <!-- No subscription -->
+    <h1>Subscribe to TableTap</h1>
+    <p>Unlock features that streamline your restaurant’s digital experience.</p>
+
+    <ul class="features-list">
+        <li>Create & manage QR menus</li>
+        <li>Add items and categories with ease</li>
+        <li>Let customers order from their phone</li>
+        <li>Real-time dashboard updates</li>
+        <li>No apps. No printing. Just scan & order.</li>
+    </ul>
+
+    <button class="btn-subscribe" onclick="openModal()">Subscribe Now</button>
+    <br>
+    <a href="{% url 'menu' %}" class="btn-back">← Back to Dashboard</a>
+
+    <!-- Subscribe Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Confirm Subscription</h3>
+        <p>Are you sure you want to subscribe to TableTap?</p>
+        <form method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" name="subscribe">
+          <button type="submit" class="btn-confirm">Yes, Subscribe</button>
+          <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+  {% elif subscribe.is_archived %}
+    <!-- Archived subscription -->
+    <h1>Your subscription is inactive</h1>
+    <p>Your TableTap subscription has been archived — either by you or an administrator.</p>
+    <p>If you'd like to reactivate it, please contact support via email.</p>
+    <div style="margin-top: 1rem;">
+        📧 <strong>Email:</strong> <a href="mailto:support@tabletap.app">support@tabletap.app</a>
+    </div>
+    <a href="{% url 'menu' %}" class="btn-back">← Back to Dashboard</a>
+
+  {% else %}
+    <!-- Active subscription -->
+    <h1>You're subscribed to TableTap!</h1>
+    <p>Subscription started on: {{ subscribe.start_date }}</p>
+    {% if subscribe.end_date %}
+      <p>Ends on: {{ subscribe.end_date }}</p>
+    {% endif %}
+
+    <button class="btn-cancel-sub" onclick="openCancelModal()">Pause / Cancel Subscription</button>
+    <a href="{% url 'menu' %}" class="btn-back">← Go to Dashboard</a>
+
+    <!-- Cancel Confirmation Modal -->
+    <div id="cancelModal" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Confirm Cancellation</h3>
+        <p>Are you sure you want to pause or cancel your subscription?</p>
+        <form method="POST" action="">
+          {% csrf_token %}
+          <input type="hidden" name="cancel">
+          <button type="submit" class="btn-confirm">Yes, Cancel</button>
+          <button type="button" class="btn-cancel" onclick="closeCancelModal()">Keep Subscription</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<!-- JavaScript -->
+<script>
+  function openModal() {
+    document.getElementById('confirmModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+  }
+
+  function openCancelModal() {
+    document.getElementById('cancelModal').style.display = 'flex';
+  }
+
+  function closeCancelModal() {
+    document.getElementById('cancelModal').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

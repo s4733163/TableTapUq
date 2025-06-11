@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TableTap | Sign In to Your Account</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+  <header>
+    <nav class="navigation">
+      <div class="container1">
+        <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+        <a href="{% url 'index' %}">TableTap</a>
+      </div>
+      <div class="container2">
+        <a href="{% url 'signup' %}">Get Started</a>
+        <a href="{% url 'login' %}">Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="main">
+      <form action="{% url 'login' %}", method="post">
+        {% csrf_token %}
+        <h1>Sign In</h1>
+        <div>
+          <label for="name">Username</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <div class="forgot">
+          Forgot password?
+        </div>
+        <div>
+          <h3>{{error}}</h3>
+        </div>
+        <input type="submit" value="Login">
+      </form>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Categories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/categoryView.css' %}">
+    <style>
+        main > div:nth-child(1) {
+            background-image: url("{% static 'img/image.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 40vh;
+            width: 100vw;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navigation">
+            <div class="container1">
+                <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+                <h1>TableTap</h1>
+            </div>
+            <div class="cart-icon">
+                🛒 <span id="cart-count">{{item}}</span>
+            </div>
+            <div>
+                <button id="Cart" data-action="{% url 'view_cart' menu_id  table.id %}">View Cart</button>
+                <button style="background-color: aliceblue;">Table  {{table.table_number}} </button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <main>
+            <div class="container7">
+                <div class="menu-heading">
+                    <h1>Our Menu</h1>
+                </div>
+                <div class="dark"></div>
+            </div>
+        </main>
+        <div class="container9">
+            <div class="grid">
+                {% for category in categorys %}
+                <div class="container10" style="background-image: url('{{ category.category_image.url }}' );"
+                    data-action="{% url 'table_menu_item' menu_url category.id table.table_number %}">
+                    <div class="menu">
+                        <h1>{{category.category_name}}</h1>
+                    </div>
+                    <div class="darker"></div>
+                    <div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+    <script>
+        document.querySelectorAll(".container10").forEach((element) => {
+            element.addEventListener("click", () => {
+                window.location.href = element.dataset.action;
+            })
+        })
+
+        document.getElementById('Cart').addEventListener("click", () => {
+            let cart = document.getElementById("Cart")
+            window.location.href = cart.dataset.action
+        })
+    </script>
+</body>
+
+</html>

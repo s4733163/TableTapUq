@@ -1,0 +1,275 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Items</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/itemsAvailable.css' %}">
+
+    <style>
+        main>div:nth-child(1) {
+            background-image: url("{% static 'img/image.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 40vh;
+            width: 100vw;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navigation">
+            <div class="container1">
+                <button data-action="{% url 'menu_category' menu_url menu_id %}" id="backButton"
+                    style="height: 40px; width: 40px; background-color: transparent; border: none; font-size: 24px; color: rgb(9, 56, 243);">
+                    <i class="bi bi-arrow-left-circle"></i>
+                </button>
+                <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+                <h1>TableTap</h1>
+            </div>
+            <div class="container2">
+                <div>
+                    <h3>{{username}}</h3>
+                </div>
+                <button>
+                    <i class="bi bi-plus" style="color: rgb(9, 56, 243);"></i> Add Item
+                </button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% if messages %}
+        <ul id="django-messages" style="display:none;">
+            {% for message in messages %}
+            <li data-level="{{ message.level_tag }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <main>
+            <div class="container7">
+                <div class="menu-heading">
+                    <h1>{{category.category_name}}</h1>
+                </div>
+                <div class="dark"></div>
+            </div>
+        </main>
+        <div class="container9">
+            <div class="grid">
+                {% for item in items %}
+                <div class="container10" data-action="{{ item.description }}">
+                    <div class="menu">
+                        <img src="{{item.item_image.url}}" alt="image">
+                    </div>
+                    <h1>{{item.item_name}}</h1>
+                    <h4>${{item.pricing}}</h4>
+                    <div>
+                        <button class="editBtn" data-id="{{ item.id }}" data-name="{{ item.item_name }}"
+                            data-price="{{ item.pricing }}" data-description="{{ item.description }}"
+                            data-action="{% url 'item_edit' %}" data-image="{{ item.item_image.url}}"
+                            data-category="{{ category.id }}">
+                            Edit Item
+                        </button>
+                        <button class="deleteBtn" data-id="{{item.id}}" data-name="{{category.id}}"
+                            data-action="{% url 'item_delete' %}">Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <form method="post" enctype="multipart/form-data">
+                        <a href="{% url 'all_items' category.id%}" id="many">Add Existing Items</a>
+                        <h1 style="color: red; margin-top: 10px;">OR</h1>
+                        <h1 style="color: red;">Add Item</h1>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Create Item"></input>
+                        <button style="margin-top: 7px;">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <h1 style="color: red;">Confirm Delete</h1>
+                    <p>Are you sure you want to delete this item?</p>
+                    <form id="deleteForm" method="post" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" id="deleteItemId">
+                        <input type="hidden" name="category" id="deleteCategory">
+                        <input type="submit" value="Yes, Delete" style="margin-bottom: 10px;">
+                    </form>
+                    <button onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <h1 style="color: red;">Edit Item</h1>
+                    <form id="editForm" method="post" enctype="multipart/form-data" action="">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" id="editItemId">
+                        <input type="hidden" name="category" id="editCategory">
+                        <label for="editItemName">Item Name</label>
+                        <input type="text" name="item_name" id="editItemName" required>
+                        <label for="editPricing">Pricing</label>
+                        <input type="text" name="pricing" id="editPricing" required>
+                        <label for="editDescription">Description</label>
+                        <textarea name="description" id="editDescription" rows="4" required></textarea>
+                        <label>Current Image</label>
+                        <img id="editImagePreview" src="" alt="Current Image" width="120px"
+                            style="margin-bottom:10px; border-radius:8px;">
+                        <label for="editImage">Upload New Image</label>
+                        <input type="file" name="item_image" id="editImage" accept="image/*">
+                        <input type="submit" value="Update Item" style="margin-top: 10px;">
+                    </form>
+                    <button onclick="closeEditModal()" style="margin-top: 10px;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <div class="main2">
+                <img id="modalImage" src="" alt="Item Image" style="width: 100%; height: auto; border-radius: 10px;">
+                <h1 id="modalTitle" style="margin-top: 10px;">Item Title</h1>
+                <h4 id="modalPrice" style="margin-bottom: 15px;">$0.00</h4>
+                <p id="modalDescription">Delicious item description goes here.</p>
+                <button onclick="closeItemModal()" style="margin-top: 10px;">Close</button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        document.querySelector(".main2 > form > button").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "none";
+        })
+
+        document.querySelector(".container2 > button").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "block";
+        })
+
+        function openItemModal(imageSrc, title, price, description) {
+            document.getElementById("modalImage").src = imageSrc;
+            document.getElementById("modalTitle").innerText = title;
+            document.getElementById("modalPrice").innerText = "$" + price;
+            document.getElementById("modalDescription").innerText = description;
+            document.getElementById("itemModal").style.display = "block";
+        }
+
+        function closeItemModal() {
+            document.getElementById("itemModal").style.display = "none";
+        }
+
+        // Example binding for each item image
+        document.querySelectorAll(".container10 .menu img").forEach((img, index) => {
+            img.addEventListener("click", () => {
+                const title = img.closest(".container10").querySelector("h1").innerText;
+                const price = img.closest(".container10").querySelector("h4").innerText.replace("$", "");
+                const description = img.parentNode.parentNode.dataset.action
+                openItemModal(img.src, title, price, description);
+            });
+        });
+
+        document.getElementById('backButton').addEventListener("click", () => {
+            let back = document.getElementById('backButton')
+            window.location.href = back.dataset.action
+
+        })
+
+        // Open Delete Modal
+        document.querySelectorAll(".deleteBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const itemId = btn.dataset.id;
+                const categoryId = btn.dataset.name;
+                const actionUrl = btn.dataset.action;
+
+                document.getElementById("deleteItemId").value = itemId;
+                document.getElementById("deleteCategory").value = categoryId;
+                document.getElementById("deleteForm").action = actionUrl;
+
+                document.getElementById("deleteModal").style.display = "block";
+            });
+        });
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        // Open Edit Modal
+        document.querySelectorAll(".editBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const itemId = btn.dataset.id;
+                const name = btn.dataset.name;
+                const price = btn.dataset.price;
+                const description = btn.dataset.description;
+                const actionUrl = btn.dataset.action;
+                const imageurl = btn.dataset.image;
+                const categoryId = btn.dataset.category;
+
+                document.getElementById("editItemId").value = itemId;
+                document.getElementById("editCategory").value = categoryId;
+                document.getElementById("editItemName").value = name;
+                document.getElementById("editPricing").value = price;
+                document.getElementById("editDescription").value = description;
+                document.getElementById("editForm").action = actionUrl;
+                document.getElementById("editImagePreview").src = imageurl;
+                document.getElementById("editModal").style.display = "block";
+            });
+        });
+
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messagesList = document.getElementById('django-messages');
+
+            if (messagesList) {
+                const allMessages = messagesList.querySelectorAll('li');
+                let found = false;
+
+                allMessages.forEach(msg => {
+                    if (msg.innerText.startsWith("Item:")) {
+                        found = true;
+
+                        // Create notification element with class instead of inline styles
+                        const popup = document.createElement('div');
+                        popup.classList.add('notification');
+                        popup.innerText = msg.innerText.substring(5).trim();
+
+                        // Add to document
+                        document.body.appendChild(popup);
+
+                        // Remove after animation completes
+                        // The animation duration is 3s total (0.3s enter + 2.4s display + 0.3s exit)
+                        setTimeout(() => {
+                            popup.remove();
+                        }, 3000);
+                    }
+                });
+
+                // Hide original messages list
+                messagesList.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

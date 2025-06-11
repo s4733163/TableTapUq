@@ -1,0 +1,502 @@
+:root {
+    --primary-blue: rgb(9, 56, 243);
+    --primary-blue-dark: rgb(7, 44, 191);
+    --primary-blue-light: rgba(9, 56, 243, 0.05);
+    --primary-cyan: rgb(1, 224, 236);
+    --primary-cyan-light: rgba(1, 224, 236, 0.1);
+    --accent-red: #E53E3E;
+    --accent-red-dark: #C53030;
+    --neutral-900: #1A202C;
+    --neutral-800: #2D3748;
+    --neutral-700: #4A5568;
+    --neutral-200: #E2E8F0;
+    --neutral-100: #F7FAFC;
+    --neutral-50: #F8FAFC;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--neutral-50);
+    color: var(--neutral-800);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ===== Navigation Bar ===== */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 40px;
+    margin: auto;
+    max-width: 1300px;
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-top: 20px;
+    position: relative;
+}
+
+.container1 {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.container1 img {
+    width: 50px;
+    height: 40px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    transition: var(--transition);
+}
+
+.container1 img:hover {
+    transform: scale(1.05);
+}
+
+.container1 h1 {
+    font-size: 28px;
+    line-height: 42px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    letter-spacing: -0.5px;
+}
+
+/* Cart styling */
+.cart-icon {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    margin-top: 0;
+}
+
+.cart-icon:hover {
+    background-color: var(--primary-blue-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+#cart-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-red);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 12px;
+}
+
+.navigation > div:last-child {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.navigation > div:last-child button {
+    margin-top: 0;
+    height: 45px;
+    min-width: 120px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.navigation > div:last-child button#Cart {
+    background-color: var(--primary-cyan);
+    color: var(--primary-blue);
+    border: none;
+}
+
+.navigation > div:last-child button#Cart:hover {
+    background-color: rgba(1, 224, 236, 0.9);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.navigation > div:last-child button[style*="background-color: aliceblue"] {
+    background-color: var(--primary-blue) !important;
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.navigation > div:last-child button[style*="background-color: aliceblue"]:hover {
+    background-color: var(--primary-blue-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===== Main Content ===== */
+main {
+    position: relative;
+}
+
+/* Menu Header Section */
+.container7 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.dark {
+    position: absolute;
+    top: 0px;
+    height: 40vh;
+    width: 100vw;
+    background-color: black;
+    filter: opacity(0.5);
+}
+
+.menu-heading {
+    background-color: var(--accent-red);
+    color: white;
+    padding: 15px 30px;
+    border-radius: var(--radius-sm);
+    z-index: 10;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    margin-top: 20px;
+}
+
+.menu-heading h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Items Grid Styling */
+.container9 {
+    max-width: 1300px;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+    justify-items: center;
+}
+
+/* Item Card Styling */
+.container10 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 320px;
+    background-color: white;
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.container10::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--accent-red);
+}
+
+.container10:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.container10 .menu img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: none;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.container10 .menu img:hover {
+    transform: scale(1.02);
+}
+
+.container10 > h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-top: 8px;
+    line-height: 1.3;
+}
+
+.container10 > h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-top: -6px;
+}
+
+/* ===== Modal Styling ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    padding: 0;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 60px auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-lg);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Item Detail Modal ===== */
+.main2 {
+    background-color: white;
+    padding: 30px;
+    width: 100%;
+}
+
+#modalImage {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+#modalTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+#modalPrice {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 20px;
+}
+
+#modalDescription {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--neutral-700);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--neutral-200);
+}
+
+.main2 form button {
+    width: 100%;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.main2 form button:hover {
+    background-color: var(--primary-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.main2 button {
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--neutral-700);
+    color: var(--neutral-700);
+    background-color: white;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.main2 button:hover {
+    background-color: var(--neutral-100);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== Responsive CSS ===== */
+@media screen and (max-width: 1024px) {
+    .navigation {
+        padding: 15px 20px;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navigation {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .container1 h1 {
+        font-size: 22px;
+    }
+    
+    .cart-icon {
+        align-self: flex-start;
+    }
+    
+    .navigation > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .navigation > div:last-child button {
+        width: 48%;
+        min-width: auto;
+    }
+    
+    .menu-heading h1 {
+        font-size: 24px;
+    }
+    
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 15px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 30px auto;
+    }
+    
+    .main2 {
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container1 img {
+        width: 40px;
+        height: 30px;
+    }
+    
+    .navigation > div:last-child {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .navigation > div:last-child button {
+        width: 100%;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .container10 {
+        max-width: 100%;
+    }
+    
+    #modalTitle {
+        font-size: 20px;
+    }
+    
+    #modalPrice {
+        font-size: 18px;
+    }
+    
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}

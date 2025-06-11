@@ -1,0 +1,506 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #38A169;
+    --primary-dark: #2F855A;
+    --primary-light: #C6F6D5;
+    --neutral-900: #1A202C;
+    --neutral-800: #2D3748;
+    --neutral-700: #4A5568;
+    --neutral-200: #E2E8F0;
+    --neutral-100: #F7FAFC;
+    --neutral-50: #F8FAFC;
+    --accent: #ED8936;
+    --accent-light: #FEEBC8;
+    --error: #E53E3E;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--neutral-50);
+    color: var(--neutral-800);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ===== Navigation Bar ===== */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: white;
+    border-bottom: 1px solid var(--neutral-200);
+}
+
+.container1 {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.container1 img {
+    width: 50px;
+    height: 40px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    transition: var(--transition);
+}
+
+.container1 img:hover {
+    transform: scale(1.05);
+}
+
+.container1 h1 {
+    font-size: 28px;
+    line-height: 42px;
+    font-weight: 700;
+    color: var(--neutral-900);
+    letter-spacing: -0.5px;
+}
+
+.container2 {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.container2 span {
+    text-decoration: none;
+    min-width: 150px;
+    height: 40px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.container2 span:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.container2 > div {
+    display: flex;
+    border: none;
+    background-color: white;
+    padding: 8px 16px;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    align-items: center;
+    transition: var(--transition);
+}
+
+.container2 > div:hover {
+    background-color: rgba(56, 161, 105, 0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.container2 > div > img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.container2 h3 {
+    font-size: 14px;
+    color: var(--primary);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+/* ===== Empty State Styling ===== */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background-color: var(--neutral-50);
+    min-height: calc(100vh - 100px);
+    padding: 20px;
+}
+
+main h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    text-align: center;
+    color: var(--neutral-700);
+    max-width: 600px;
+}
+
+main h1 strong {
+    color: var(--primary);
+    font-weight: 700;
+    position: relative;
+    white-space: nowrap;
+}
+
+main h1 strong::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-light);
+    border-radius: 1px;
+}
+
+/* Add an illustration for empty state */
+main:before {
+    content: '';
+    display: block;
+    width: 180px;
+    height: 180px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2338A169" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 2H8a2 2 0 00-2 2v3h12V4a2 2 0 00-2-2z"></path><path d="M12 12h.01"></path><path d="M12 16h.01"></path><path d="M16 12h.01"></path><path d="M16 16h.01"></path><path d="M8 12h.01"></path><path d="M8 16h.01"></path></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 20px;
+    opacity: 0.2;
+}
+
+/* ===== Modal Styling ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-lg);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Form Styling ===== */
+.main2 {
+    background-color: white;
+    padding: 30px;
+    width: 100%;
+}
+
+.main2 h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: var(--neutral-900);
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.main2 h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 2px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--neutral-700);
+}
+
+input[type="text"] {
+    width: 100%;
+    height: 45px;
+    background-color: var(--neutral-100);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--neutral-200);
+    padding: 0 16px;
+    margin-bottom: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.2);
+}
+
+input[type="file"] {
+    margin-bottom: 20px;
+    margin-top: 8px;
+    border: 1px solid var(--neutral-200);
+    background-color: var(--neutral-100);
+    border-radius: var(--radius-sm);
+    display: block;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 15px;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    min-width: 90px;
+    padding: 8px 16px;
+    background-color: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+button:hover {
+    background-color: rgba(56, 161, 105, 0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+small[id$="_error_msg"] {
+    color: var(--error) !important;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+/* Django message popup */
+.message-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    z-index: 9999;
+    animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ===== Responsive CSS ===== */
+@media (max-width: 1024px) {
+    .navigation {
+        padding: 15px 20px;
+    }
+    
+    main h1 {
+        font-size: 20px;
+    }
+    
+    main:before {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navigation {
+        padding: 15px;
+    }
+    
+    .container1 {
+        margin-bottom: 10px;
+    }
+    
+    .container2 {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+    
+    .container2 > div,
+    .container2 span {
+        min-width: auto;
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    main {
+        padding: 20px 15px;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+    
+    .main2 {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    main h1 {
+        font-size: 18px;
+    }
+    
+    main:before {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .main2 h1 {
+        font-size: 20px;
+    }
+}
+
+/* Add this to your CSS files */
+.message-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    max-width: 90%;
+    text-align: center;
+    animation: popupFadeIn 0.3s ease-out forwards;
+    opacity: 0;
+}
+
+/* Add different message types */
+.message-popup.success {
+    background-color: var(--primary);
+    border-left: 4px solid var(--primary-dark);
+}
+
+.message-popup.error {
+    background-color: var(--error);
+    border-left: 4px solid #C53030;
+}
+
+.message-popup.warning {
+    background-color: #ED8936;
+    border-left: 4px solid #C05621;
+}
+
+.message-popup.info {
+    background-color: #4299E1;
+    border-left: 4px solid #2B6CB0;
+}
+
+@keyframes popupFadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes popupFadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+}
+
+/* Applying the exit animation */
+.message-popup.fade-out {
+    animation: popupFadeOut 0.3s ease-out forwards;
+}

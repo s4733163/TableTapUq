@@ -1,0 +1,194 @@
+:root {
+    --primary-color: #0938f3;
+    --accent-color: #01e0ec;
+    --text-color: #333;
+    --bg-color: #f4f4f4;
+    --font-main: 'Montserrat', sans-serif;
+    --font-alt: 'Roboto', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== Navigation Bar ===== */
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 5%;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.container1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.container1 img {
+    width: 50px;
+    height: auto;
+}
+
+.container1 h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-color);
+    font-family: var(--font-main);
+}
+
+.container2 {
+    display: flex;
+    gap: 10px;
+}
+
+.container2 button {
+    font-family: var(--font-alt);
+    font-size: 14px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.container2 button:hover {
+    background-color: #00c9d6;
+}
+
+.container2 > div {
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 10px;
+    padding: 0 10px;
+}
+
+.container2 > div > img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.container2 h3 {
+    color: var(--accent-color);
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* ===== Page Body ===== */
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+main {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+main > h1 {
+    font-size: 42px;
+    margin-top: 30px;
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-decoration-color: #015858;
+}
+
+main > div > p {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+/* ===== QR Form ===== */
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+form {
+    background: white;
+    border: 2px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+form > h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    text-align: left;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    margin-bottom: 15px;
+}
+
+button {
+    font-size: 16px;
+    font-family: var(--font-main);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #072ac8;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .navigation {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .container2 {
+        margin-top: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    form {
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    input[type="number"],
+    button {
+        width: 100%;
+    }
+
+    main > h1 {
+        font-size: 28px;
+    }
+}

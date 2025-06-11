@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Orders</title>
+  <link rel="stylesheet" href="{% static 'css/viewOrder.css' %}">
+</head>
+<body>
+
+  <h1>Vendor Order Dashboard</h1>
+
+  <table class="order-table">
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+          {% with cart_items=order.cart_id.cart_item_set.all %}
+            <tr>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.customer_phone }}</td>
+              <td>{{ order.customer_email }}</td>
+              <td>${{ order.total_price }}</td>
+              <td>
+                <span style="padding: 4px 10px; background-color:#2ecc71; color: white; border-radius: 8px;">
+                    {{ order.order_status|title }}
+                </span>
+              <td>
+                <button class="view-btn"
+                  onclick="openModal(
+                    '{{ order.customer_name }}',
+                    '{{ order.customer_phone }}',
+                    '{{ order.customer_email }}',
+                    '${{ order.total_price }}',
+                    `{% for item in cart_items %}{{ item.item_id.item_name }} x{{ item.quantity }},{% endfor %}`,
+                    `{{ order.id }}`
+                  )">View</button>
+              </td>
+            </tr>
+          {% endwith %}
+        {% empty %}
+          <tr><td colspan="5" style="text-align:center;">No orders available.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  <!-- Modal -->
+  <div class="modal" id="orderModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Order Details</h2>
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="modal-details" id="modalDetails">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+   function openModal(name, phone, email, total, items, orderId) {
+  const modal = document.getElementById('orderModal');
+  const csrfToken = getCookie('csrftoken');
+
+  const actionUrl = "{% url 'complete_order' 0 %}".replace('0', orderId);
+
+  const content = `
+    <div class="detail-row"><span class="label">👤 Customer:</span><span>${name}</span></div>
+    <div class="detail-row"><span class="label">📞 Phone:</span><span>${phone}</span></div>
+    <div class="detail-row"><span class="label">✉️ Email:</span><span>${email}</span></div>
+    <div class="detail-row"><span class="label">💳 Total:</span><span>${total}</span></div>
+    <div class="detail-row"><span class="label">🧾 Items:</span></div>
+    <ul class="items-list">
+      ${items
+        .split(',')
+        .map(i => i.trim())
+        .filter(i => i.length > 0)
+        .map(i => `<li>${i}</li>`)
+        .join('')}
+    </ul>
+    <form method="POST" action="${actionUrl}">
+      <input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">
+      <button type="submit" style="
+        margin-top: 20px;
+        background-color: #2ecc71;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+      ">✅ Mark as Completed</button>
+    </form>
+  `;
+
+  document.getElementById('modalDetails').innerHTML = content;
+  modal.style.display = 'flex';
+}
+
+    // CSRF helper function
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+            }
+        }
+        return cookieValue;
+        }
+
+    function closeModal() {
+      document.getElementById('orderModal').style.display = 'none';
+    }
+
+    // Close modal on background click
+    window.onclick = function (e) {
+      const modal = document.getElementById('orderModal');
+      if (e.target == modal) {
+        closeModal();
+      }
+    }
+  </script>
+
+</body>
+</html> 

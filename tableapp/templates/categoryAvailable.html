@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Categories</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/categoryAvailable.css' %}">
+
+    <style>
+       main > div:nth-child(1) {
+            background-image: url("{% static 'img/image.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 40vh;
+            width: 100vw;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navigation">
+            <div class="container1">
+                <button data-action="{% url 'menu'%}" id="backButton"
+                    style="height: 40px; width: 40px; background-color: transparent; border: none; font-size: 24px; color: rgb(9, 56, 243);">
+                    <i class="bi bi-arrow-left-circle"></i>
+                </button>
+                <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+                <h1>TableTap</h1>
+            </div>
+            <div class="container2">
+                <div>
+                    <h3>{{username}}</h3>
+                </div>
+                <div>
+                    <h3 class="qr" data-action="{% url 'qrcode' menu.menu_url|slice:'1:-1' menu.id%}">Get QR Code</h3>
+                </div>
+                <button>
+                    <i class="bi bi-plus" style="color: rgb(9, 56, 243);"></i> Add Category
+                </button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% if messages %}
+        <ul id="django-messages" style="display:none;">
+            {% for message in messages %}
+            <li data-level="{{ message.level_tag }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <main>
+            <div class="container7">
+                <div class="menu-heading">
+                    <h1>Our Menu</h1>
+                </div>
+                <div class="dark"></div>
+            </div>
+        </main>
+        <div class="container9">
+            <div class="grid">
+                {% for category in categorys %}
+                <div class="container10" style="background-image: url('{{ category.category_image.url }}' );"
+                    data-action="{% url 'menu_items' category.category_url|slice:'1:-1' category.id %}">
+                    <div class="menu">
+                        <h1>{{category.category_name}}</h1>
+                    </div>
+                    <div class="darker"></div>
+                    <div>
+                        <button data-id="{{ category.id }}" data-name="{{ category.category_name }}"
+                            data-url="{{ category.category_url }}" data-image="{{ category.category_image.url }}"
+                            class="editCategory" data-action="{% url 'category_edit' %}">Edit</button>
+                        <button data-id="{{ category.id }}" data-action="{% url 'category_delete' %}"
+                            class="deleteCategory">Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <form method="post" enctype="multipart/form-data" onsubmit="return validateCreateUrl()">
+                        <h1 style="color: red;">Add Category</h1>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <small id="create_url_error_msg" style="color: red; display: none;">Invalid format! Use
+                            /lettersOrDigitsOnly/</small>
+                        <input type="submit" value="Create Category">
+                        <button type="button" style="margin-top: 7px;" onclick="closeModal('myModal')">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <form method="post" enctype="multipart/form-data" id="editCategoryForm"
+                        onsubmit="return validateEditUrl()">
+                        {% csrf_token %}
+                        <h1 style="color: red;">Edit Category</h1>
+                        <input type="hidden" name="category_id" id="editCategoryId">
+                        <label for="edit_name">Category Name:</label>
+                        <input type="text" id="edit_name" name="category_name" required>
+                        <label for="edit_url">Category URL:</label>
+                        <input type="text" id="edit_url" name="category_url" required>
+                        <small id="edit_url_error_msg" style="color: red; display: none;">Invalid format! Use
+                            /lettersOrDigitsOnly/</small>
+                        <label>Current Image</label>
+                        <img id="editImagePreview" src="" alt="Current Image" width="120px"
+                            style="margin-bottom:10px; border-radius:8px;">
+                        <label for="edit_image">Upload New Image (optional):</label>
+                        <input type="file" id="edit_image" name="category_image">
+                        <input type="submit" value="Update Category">
+                        <button type="button" style="margin-top: 7px;" onclick="closeModal('editModal')">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <div class="main2">
+                    <form method="post" id="deleteCategoryForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="category_id" id="deleteCategoryId">
+                        <h1 style="color: red;">Confirm Deletion</h1>
+                        <p>Are you sure you want to delete this category?</p>
+                        <input type="submit" value="Yes, Delete">
+                        <button type="button" style="margin-top: 7px;"
+                            onclick="closeModal('deleteModal')">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+
+        let back = document.querySelector("#backButton")
+        back.addEventListener("click", () => {
+            window.location.href = back.dataset.action
+        })
+
+        document.querySelectorAll(".editCategory").forEach((element) => {
+            element.addEventListener("click", (e) => {
+                e.stopPropagation()
+                document.getElementById("editModal").style.display = 'flex'
+                document.getElementById("editCategoryId").value = element.dataset.id
+                document.getElementById("edit_name").value = element.dataset.name
+                document.getElementById("edit_url").value = element.dataset.url
+                document.getElementById("editImagePreview").src = element.dataset.image
+                document.getElementById("editCategoryForm").action = element.dataset.action
+            })
+        })
+
+        document.querySelectorAll(".deleteCategory").forEach((element) => {
+            element.addEventListener("click", (e) => {
+                e.stopPropagation()
+                document.getElementById("deleteCategoryId").value = element.dataset.id
+                document.getElementById("deleteModal").style.display = 'flex'
+                document.getElementById("deleteCategoryForm").action = element.dataset.action
+            })
+        })
+
+
+        document.querySelector(".main2 > form > button").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "none";
+        })
+
+        document.querySelector(".container2 > button").addEventListener("click", () => {
+            document.getElementById("myModal").style.display = "block";
+        })
+
+        const closeModal = (id) => {
+            document.getElementById(id).style.display = "none";
+        }
+
+        document.querySelectorAll(".container10").forEach((element) => {
+            element.addEventListener("click", () => {
+                window.location.href = element.dataset.action
+            })
+        })
+
+
+        // Adjusted validation for both create and edit
+        const createUrlInput = document.getElementById("menu_url_input");
+        const createErrorMsg = document.getElementById("create_url_error_msg");
+
+        const editUrlInput = document.getElementById("edit_url");
+        const editErrorMsg = document.getElementById("edit_url_error_msg");
+
+        function validateCreateUrl() {
+            const value = createUrlInput.value;
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            if (!regex.test(value)) {
+                createErrorMsg.style.display = "block";
+                createUrlInput.focus();
+                return false;
+            }
+            return true;
+        }
+
+        function validateEditUrl() {
+            const value = editUrlInput.value;
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            if (!regex.test(value)) {
+                editErrorMsg.style.display = "block";
+                editUrlInput.focus();
+                return false;
+            }
+            return true;
+        }
+
+        createUrlInput.addEventListener("input", () => {
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            createErrorMsg.style.display = regex.test(createUrlInput.value) ? "none" : "block";
+        });
+
+        editUrlInput.addEventListener("input", () => {
+            const regex = /^\/[a-zA-Z0-9]+\/$/;
+            editErrorMsg.style.display = regex.test(editUrlInput.value) ? "none" : "block";
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messagesList = document.getElementById('django-messages');
+            
+            if (messagesList) {
+                const allMessages = messagesList.querySelectorAll('li');
+                let found = false;
+                
+                allMessages.forEach(msg => {
+                    if (msg.innerText.startsWith("Category:")) {
+                        found = true;
+                        
+                        // Create notification element
+                        const notification = document.createElement('div');
+                        
+                        // Add classes instead of inline styles
+                        notification.classList.add('notification', 'notification-error');
+                        
+                        // Set the message content
+                        notification.innerText = msg.innerText.substring(9).trim();
+                        
+                        // Add to document
+                        document.body.appendChild(notification);
+                        
+                        // Remove after animation completes (3s animations + 0.3s buffer)
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3300);
+                    }
+                });
+                
+                // Hide original messages list
+                messagesList.style.display = 'none';
+            }
+        });
+
+        document.querySelector(".qr").addEventListener("click", () => {
+            let button = document.querySelector(".qr")
+            window.location.href = button.dataset.action;
+        })
+    </script>
+</body>
+
+</html>

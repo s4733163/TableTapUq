@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableTap | Simplify Restaurant Ordering</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style>
+        main>div:nth-child(1) {
+            background-image: url("{% static 'img/heading.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 70vh;
+            width: 100%;
+            position: relative;
+            margin-bottom: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navigation">
+            <div class="container1">
+                <img src="{% static 'img/tabletap.png' %}" alt="Logo">
+                <a href="{% url 'index' %}">TableTap</a>
+            </div>
+            <div class="container2">
+                <a href="{% url 'signup' %}">Get Started</a>
+                <a href="{% url 'login' %}">Login</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div>
+            <h1>Simplify Your Restaurant’s Ordering Experience</h1>
+            <h3>QR-code based ordering and payments for modern cafes and restaurants</h3>
+            <div class="dark"></div>
+        </div>
+        <div>
+            <h1>Features</h1>
+            <div class="container3">
+                <img src="{% static 'img/490bc3689c5da391afecca0c1d3768c4f1e313277d2002b5cc59be5ea08aacc4.png' %}"
+                    alt="Features">
+                <div>
+                    <h1>Menu Management</h1>
+                    <h1>Easily customize and update your menu in real-time.</h1>
+                </div>
+            </div>
+            <div class="svg">
+                <svg width="30" height="30" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="10" stroke="black" stroke-width="10" fill="white" />
+                </svg>
+                <svg width="30" height="30" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="10" stroke="black" stroke-width="10" fill="white" />
+                </svg>
+                <svg width="30" height="30" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="10" stroke="black" stroke-width="10" fill="white" />
+                </svg>
+                <svg width="30" height="30" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="10" stroke="black" stroke-width="10" fill="white" />
+                </svg>
+                <svg width="30" height="30" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="10" stroke="black" stroke-width="10" fill="white" />
+                </svg>
+
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <h2>Questions? Call 000-800-919-1694</h2>
+        <div class="container8">
+            <a href="">Investor Relations</a>
+            <a href="">Jobs</a>
+            <a href="">Terms of Use</a>
+            <a href="">Help Centre</a>
+            <a href="">Account</a>
+            <a href="">Legal Notices</a>
+            <a href="">Media Centre</a>
+            <a href="">Privacy</a>
+            <a href="">Cookie Preferences</a>
+            <a href="">Corporate</a>
+            <a href="">Contact Us</a>
+            <a href="">Legal Notices</a>
+        </div>
+    </footer>
+    <script>
+        let image = document.querySelector(".container3 > img");
+        let main = document.querySelector(" .container3 > div > h1:nth-child(1)");
+        let sub = document.querySelector(" .container3 > div > h1:nth-child(2)")
+        document.querySelector(".svg svg:nth-child(1)").addEventListener("click", () => {
+            document.querySelectorAll("circle").forEach((element) => {
+                element.setAttribute("fill", "white");
+            })
+            document.querySelector(".svg svg:nth-child(1) circle").setAttribute("fill", "red");
+            image.setAttribute("src", "{% static 'img/490bc3689c5da391afecca0c1d3768c4f1e313277d2002b5cc59be5ea08aacc4.png' %}")
+            main.innerHTML = "Menu Management"
+            sub.innerHTML = "Easily customize and update your menu in real-time."
+        })
+
+        document.querySelector(".svg svg:nth-child(2)").addEventListener("click", () => {
+            document.querySelectorAll("circle").forEach((element) => {
+                element.setAttribute("fill", "white");
+            })
+            document.querySelector(".svg svg:nth-child(2) circle").setAttribute("fill", "red");
+            image.setAttribute("src", "{% static 'img/QRcode.png' %}")
+            main.innerHTML = "QR Code Generation"
+            sub.innerHTML = "Generate QR codes to connect customers with your menu."
+        })
+
+        document.querySelector(".svg svg:nth-child(3)").addEventListener("click", () => {
+            document.querySelectorAll("circle").forEach((element) => {
+                element.setAttribute("fill", "white");
+            })
+            document.querySelector(".svg svg:nth-child(3) circle").setAttribute("fill", "red");
+            image.setAttribute("src", "{% static 'img/OrderDashboard.png' %}")
+            main.innerHTML = "Order Dashboard"
+            sub.innerHTML = "Monitor and manage orders seamlessly in real-time."
+        })
+
+        document.querySelector(".svg svg:nth-child(4)").addEventListener("click", () => {
+            document.querySelectorAll("circle").forEach((element) => {
+                element.setAttribute("fill", "white");
+            })
+            document.querySelector(".svg svg:nth-child(4) circle").setAttribute("fill", "red");
+            image.setAttribute("src", "{% static 'img/Intgerations.png' %}")
+            main.innerHTML = "Payment Integrations"
+            sub.innerHTML = "Support multiple payment gateways for customer convenience."
+        })
+
+        document.querySelector(".svg svg:nth-child(5)").addEventListener("click", () => {
+            document.querySelectorAll("circle").forEach((element) => {
+                element.setAttribute("fill", "white");
+            })
+            document.querySelector(".svg svg:nth-child(5) circle").setAttribute("fill", "red");
+            image.setAttribute("src", "{% static 'img/Responsive.png' %}")
+            main.innerHTML = "Mobile Responsiveness"
+            sub.innerHTML = "Ensure a seamless experience across all devices."
+        })
+
+    </script>
+</body>
+
+</html>

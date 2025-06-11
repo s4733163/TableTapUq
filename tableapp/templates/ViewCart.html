@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/ViewCart.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+    <input type="hidden" id="csrf_token" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <header>
+        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+            <button id="backBtn"
+                data-action="{% url 'table_menu_category' menu.menu_url|slice:'1:-1' menu.id table.table_number %}"
+                style="padding: 10px 20px; background-color: #ddd; border: none; border-radius: 6px; cursor: pointer;">
+                ⬅ Back
+            </button>
+            <h1 style="margin: 0; font-size: 28px; font-weight: 700;">Your Cart</h1>
+            <div></div> <!-- Empty div to balance the flex layout -->
+            <button id="btn" style="background-color: aliceblue;">Table {{table.table_number}}</button>
+        </nav>
+    </header>
+
+    <div class="cart-container">
+        {% for cart_item in cart_items %}
+        <div class="cart-item">
+            <img src="{{cart_item.item_id.item_image.url}}" alt="image">
+            <div class="item-info">
+                <div class="item-name">{{cart_item.item_id.item_name}}</div>
+                <div class="item-price">${{cart_item.item_id.pricing}}</div>
+            </div>
+            <div class="item-controls">
+                {% if cart_item.quantity > 1 %}
+                    <button class="modify" data-action="{% url 'delete_cart' cart_item.cart_id.pk cart_item.item_id.pk 'subtract' %}">-</button>
+                {% else %}
+                    <button class="modify"  data-action="{% url 'delete_cart' cart_item.cart_id.pk cart_item.item_id.pk 'delete' %}" ><i class="bi bi-trash"></i></button>
+                {% endif %}
+                <input type="number" value="{{cart_item.quantity}}" min="1" />
+                <button class="modify" data-action="{% url 'delete_cart' cart_item.cart_id.pk cart_item.item_id.pk 'add' %}">+</button>
+            </div>
+        </div>
+        {% endfor %}
+        <form method="POST" action="{% url 'checkout' cart.id %}">
+            {% csrf_token %}
+            <div class="allergen-info">
+                <label for="allergen1">Allergens:</label>
+                <textarea id="allergen1" placeholder="Enter allergen information..." name="allergen">{{cart.notes}}</textarea>
+            </div>
+        
+            <div class="cart-summary">
+                <div class="total">Total: ${{ total }}</div>
+                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById("backBtn").addEventListener("click", () => {
+            let button = document.getElementById("backBtn")
+            window.location.href = button.dataset.action
+        })
+
+        document.querySelectorAll('.modify').forEach(button => {
+            button.addEventListener('click', function () {
+                const actionUrl = this.getAttribute('data-action');
+
+                // Create a form dynamically
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = actionUrl;
+
+                // Add CSRF token (required for Django)
+                const csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>
