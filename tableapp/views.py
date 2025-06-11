@@ -704,7 +704,7 @@ def get_qr(request, menu_url, pk):
         Tables.objects.filter(menu_id=Menu.objects.get(id=pk)).delete()
         total = int(request.POST.get("count"))
         qr_codes = []
-        base_url = "https://infs3202-1361da7f.uqcloud.net/tabletap/menu"
+        base_url = "https://tabletapuq.onrender.com/tabletap/menu"
         # the table number starts from 1 and ends in total
         for i in range(1, total+1):
             #https://infs3202-1361da7f.uqcloud.net/tabletap/menu/tuesdayg/14/category/1
